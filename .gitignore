@@ -1,0 +1,64 @@
+# Ignora arquivos temporários do sistema
+*.swp
+*.DS_Store
+Thumbs.db
+
+# Ignora arquivos de build e binários comuns
+/build/
+/bin/
+/obj/
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.so
+*.dll
+*.dylib
+
+# Ignora arquivos de debug
+*.log
+*.tmp
+*.pch
+*.pid
+
+# Ignora backups do editor
+*.bak
+*.old
+*.swo
+
+# Ignora arquivos de configuração e pastas de IDEs
+# CLion e outras IDEs baseadas em JetBrains
+.idea/
+# VS Code
+.vscode/
+# Visual Studio
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
+*.sln
+# Eclipse
+.cproject
+.project
+.settings/
+
+# Makefile outputs
+Makefile
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+build/
+install/
+test/
+
+# Arquivos temporários e logs de CMake
+CMakeLists.txt.user
+Testing/
+CTestTestfile.cmake
+CTest.log
+
+# Ignora arquivos específicos do sistema operacional
+# MacOS
+*.DS_Store
+# Windows
+Thumbs.db
