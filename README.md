@@ -28,9 +28,9 @@ Para modelar o trabalho em questão, de forma a obter a melhor performance poss�
 
 ## Leitura de Palavras
 
-Como a entrada deste trabalho, tanto as **keywords** quanto os documentos a serem ranqueados, estão em formato de arquivos `.txt`, é necessário ser capaz de acessar cada palavra de maneira eficiente. Para isso, todas as palavras a serem pesquisadas (**keywords**), após serem lidas do arquivo, foram armazenadas em um **unordered_set**, permitindo acesso rápido e eficiente. Isso porque o **unordered_set** oferece busca em tempo constante, O(1), em comparação ao **vector**, cuja busca tem custo linear, O(n). Esse ganho de performance é essencial quando lidamos com grandes volumes de dados.
+Como a entrada deste trabalho, tanto as frases quanto os documentos a serem ranqueados, estão em formato de arquivos `.txt`, é necessário ser capaz de acessar cada palavra de maneira eficiente. Para isso, todas as palavras a serem pesquisadas (**keywords**), após serem lidas do arquivo, foram armazenadas em um **unordered_set**, permitindo acesso rápido e eficiente. Isso porque o **unordered_set** oferece busca em tempo constante, O(1), em comparação ao **vector**, cuja busca tem custo linear, O(n). Esse ganho de performance é essencial quando lidamos com grandes volumes de dados.
 
-## Contagem de Palavras
+### Contagem de Palavras
 
 Para abordar corretamente o problema apresentado, primeiramente é necessário realizar a normalização dos textos presentes em cada documento. Para isso, é preciso eliminar todas as palavras que geralmente não alteram o sentido do texto. Essas palavras são as chamadas "stop words", como: "a", "as", "que", "da", "de", entre outras. Durante esse processo, é necessário contar as palavras relevantes em cada documento. Para cada documento, foi utilizada uma estrutura do tipo **Hash Table**, ou **unordered_map** em C++, para auxiliar na contagem. Como as **Hash Tables** possuem custo de acesso em tempo constante, O(1), elas são uma excelente escolha para atribuir a um índice específico o número de ocorrências de cada palavra.
 
@@ -42,7 +42,7 @@ Essa abordagem resolve o problema para um único documento, mas é necessário e
 
  
 
-## Cálculo TF (Term Frequency)
+### Cálculo TF (Term Frequency)
 
 Cada palavra a ser ranqueada usando o algoritmo TF-IDF possui um valor de **Term Frequency** (TF) para cada documento. Portanto, é necessário que exista uma estrutura que armazene, para cada palavra, seus valores de **Term Frequency** em cada documento. Para modelar essa etapa, novamente foram utilizadas tabelas hash. Porém, nesta etapa, ao invés de armazenar a contagem de ocorrências de uma palavra, armazenamos um array que contém os valores de **Term Frequency** para cada documento.
 
@@ -51,7 +51,7 @@ O resultado final é uma tabela hash onde a chave é a palavra, e o valor é um 
 <a href="https://github.com/joaopaulocunhafaria/Faculdade/blob/dd1c6e58b73d0b8b527b2f6da8990a175572fc0b/AEDS%20II/TF-IDF/src/tfIdf.hpp#L15"> Acesse a declaração no código </a>
  
 
-## Cálculo IDF (Inverse Document Frequency)
+### Cálculo IDF (Inverse Document Frequency)
 
 O cálculo do **Inverse Document Frequency** (IDF) é mais simples, pois cada palavra possui apenas um valor de IDF. Isso permite uma modelagem mais direta. Inicialmente, considerou-se a possibilidade de usar estruturas do tipo **Tuple** para essa etapa. No entanto, como será necessário acessar os valores de IDF posteriormente, **Tuples** não são a melhor opção, pois a busca dentro de um array de **Tuples** tem custo O(n). Por outro lado, o uso de tabelas hash oferece tempo de acesso constante, O(1).
 
@@ -59,7 +59,7 @@ Assim, os valores resultantes dos cálculos de **Inverse Document Frequency** pa
 
 <a href="https://github.com/joaopaulocunhafaria/Faculdade/blob/dd1c6e58b73d0b8b527b2f6da8990a175572fc0b/AEDS%20II/TF-IDF/src/tfIdf.hpp#L18"> Acesse a declaração no código </a>
   
-## Cálculo de Relevância TF/IDF
+### Cálculo de Relevância TF/IDF
 
 Finalmente, para termos acesso ao ranking que cada palavra possui em cada documento, é necessário realizar o cálculo proposto pelo algoritmo TF/IDF. Esse cálculo se baseia em multiplicar o TF **(Term Frequency)** de uma palavra em relação a determinado documento pelo seu IDF  **(Inverse Document Frequency)**  em relação à totalidade dos documentos.
 
