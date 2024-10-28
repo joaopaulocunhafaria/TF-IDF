@@ -177,10 +177,10 @@ void TfIdf::showScore()
         vector<double> score = lineScore.at(i);
         vector<int> rank = sortedIndices(score);
 
-        // cout << "A frase " << i + 1 << " tem mais relevancia para os seguintes documentos: " << endl;
+        cout << "A frase " << i + 1 << " tem mais relevancia para os seguintes documentos: " << endl;
         for (size_t j = 0; j < rank.size(); j++)
         {
-            // cout << "Documento " << rank[j] + 1 << endl;
+            cout << "Documento " << rank[j] + 1 << endl;
         }
     }
 }
@@ -283,9 +283,7 @@ vector<vector<double>> TfIdf::calculateScore()
         }
 
         result.push_back(score);
-    }
-    cout << "score size: " << wordsScore["cypreste"].size() << endl;
-    cout << "tf cypreste: " << tfRank["cypreste"].size() << endl;
+    } 
 
     return result;
 }
