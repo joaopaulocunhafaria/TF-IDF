@@ -4,7 +4,8 @@ TfIdf::TfIdf()
 {
 }
 
-void TfIdf::run(vector<unordered_map<string, int>> wordsInDocs){
+void TfIdf::run(vector<unordered_map<string, int>> wordsInDocs)
+{
 
     this->keyWords = processKeyWords();
     this->idfRank = idf(wordsInDocs);
@@ -45,21 +46,32 @@ unordered_map<string, vector<double>> TfIdf::tf(vector<unordered_map<string, int
     unordered_map<string, vector<double>> tfPerDoc;
     int docsQuantity = wordsInDocs.size();
 
+    unordered_set<string> processedKeys;
+
     for (auto line : keyWords)
     {
         for (auto key : line)
         {
-            int howManyApperanceInEachDocument;
-            int totalTermsInDoc;
-            for (int i = 0; i < docsQuantity; i++)
+
+            if (processedKeys.find(key) == processedKeys.end())
             {
-                totalTermsInDoc = wordsInDocs[i].size();
-                howManyApperanceInEachDocument = wordsInDocs[i][key];
-                double result = static_cast<double>(howManyApperanceInEachDocument) / static_cast<double>(totalTermsInDoc);
-                tfPerDoc[key].push_back(result);
+
+                int howManyApperanceInEachDocument;
+                int totalTermsInDoc;
+                for (int i = 0; i < docsQuantity; i++)
+                {
+                    totalTermsInDoc = wordsInDocs[i].size();
+                    howManyApperanceInEachDocument = wordsInDocs[i][key];
+                    double result = static_cast<double>(howManyApperanceInEachDocument) / static_cast<double>(totalTermsInDoc);
+                    tfPerDoc[key].push_back(result);
+                }
             }
+
+            processedKeys.insert(key);
         }
     }
+
+    processedKeys.clear();
 
     return tfPerDoc;
 }
@@ -88,27 +100,42 @@ vector<string> TfIdf::processLine(string line)
 
     vector<string> result;
 
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    wchar_t comAcentos[] = L"ÄÅÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛüúûùÇç";
+    wchar_t semAcentos[] = L"AAAAAAaaaaaEEEEeeeeIIIIiiiiOOOOOoooooUUUuuuuCc";
+
     if (!line.empty())
     {
+        std::wstring text = converter.from_bytes(line);
+        for (size_t i = 0; i < wcslen(comAcentos); i++)
+        {
+            std::replace(text.begin(), text.end(), comAcentos[i], semAcentos[i]);
+        }
+
+        line = converter.to_bytes(text);
 
         vector<string> lineWords = splitString(line);
+
         for (size_t i = 0; i < lineWords.size(); i++)
         {
             string word = lineWords.at(i);
 
-            transform(word.begin(), word.end(), word.begin(), [](unsigned char c)
-                      {
-                          return std::tolower(c); // Converte cada caractere para minúscula
-                      });
+            if (word.begin() != word.end())
+            {
 
-            // tirar os acentos
+                // Configurar a conversão para UTF-8
+                transform(word.begin(), word.end(), word.begin(), [](unsigned char c)
+                          {
+                              return std::tolower(c); // Converte cada caractere para minúscula
+                          });
+                // tirar os acentos
 
-            word.erase(remove_if(word.begin(), word.end(),
-                                 [](unsigned char c)
-                                 { return c == '.' || c == ',' || c == '!' || c == '?' || c == ':' || c == ';' || c == '"' || c == '\'' || c == '(' || c == ')' || c == '[' || c == ']' || c == '{' || c == '}' || c == '-' || c == '_'; }),
-                       word.end());
-
-            result.push_back(word);
+                word.erase(remove_if(word.begin(), word.end(),
+                                     [](unsigned char c)
+                                     { return c == '.' || c == ',' || c == '!' || c == '?' || c == ':' || c == ';' || c == '"' || c == '\'' || c == '(' || c == ')' || c == '[' || c == ']' || c == '{' || c == '}' || c == '-' || c == '_'; }),
+                           word.end());
+                result.push_back(word);
+            }
         }
     }
 
@@ -123,6 +150,7 @@ unordered_map<string, vector<double>> TfIdf::calculateTfIdf()
     for (size_t i = 0; i < keyWords.size(); i++)
     {
         vector<string> line = keyWords.at(i);
+
         for (size_t j = 0; j < line.size(); j++)
         {
             string key = line[j];
@@ -143,17 +171,17 @@ unordered_map<string, vector<double>> TfIdf::calculateTfIdf()
 
 void TfIdf::showScore()
 {
+
     for (size_t i = 0; i < lineScore.size(); i++)
     {
         vector<double> score = lineScore.at(i);
         vector<int> rank = sortedIndices(score);
-    
-        cout << "A frase " << i + 1 << " tem mais relevancia para os seguintes documentos: " << endl;
+
+        // cout << "A frase " << i + 1 << " tem mais relevancia para os seguintes documentos: " << endl;
         for (size_t j = 0; j < rank.size(); j++)
         {
-            cout << "Documento "<<rank[j] + 1 <<endl;
+            // cout << "Documento " << rank[j] + 1 << endl;
         }
-        
     }
 }
 
@@ -225,7 +253,6 @@ vector<int> TfIdf::sortedIndices(const vector<double> &arr)
     mergeSort(arr, indices, 0, n - 1);
     return indices;
 }
- 
 
 vector<string> TfIdf::splitString(string str)
 {
@@ -248,6 +275,7 @@ vector<vector<double>> TfIdf::calculateScore()
 
     for (auto line : keyWords)
     {
+
         vector<double> score(line.size(), 0.0);
         for (auto key : line)
         {
@@ -256,6 +284,8 @@ vector<vector<double>> TfIdf::calculateScore()
 
         result.push_back(score);
     }
+    cout << "score size: " << wordsScore["cypreste"].size() << endl;
+    cout << "tf cypreste: " << tfRank["cypreste"].size() << endl;
 
     return result;
 }

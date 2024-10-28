@@ -27,9 +27,9 @@ unordered_set<string> ProcessBooks::processStopWords()
     unordered_set<string> stopWords;
     string line;
 
-        stopWords.insert(line);
     while (getline(file, line))
     {
+        stopWords.insert(line);
     }
 
     file.close();
