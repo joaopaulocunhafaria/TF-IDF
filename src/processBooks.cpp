@@ -6,14 +6,19 @@ ProcessBooks::ProcessBooks(int booksQuantity)
 
     this->booksQuantity = booksQuantity;
 
+};
+
+void ProcessBooks::run(){
+
     this->stopWords = processStopWords();
 
     this->wordsInDocument = processWords();
 
-    TfIdf tfIdf = TfIdf(wordsInDocument);
+    TfIdf tfIdf = TfIdf();
+    
+    tfIdf.run(wordsInDocument);
 
-};
-
+}
 unordered_set<string> ProcessBooks::processStopWords()
 {
 

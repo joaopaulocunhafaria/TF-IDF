@@ -1,7 +1,11 @@
 #include "tfIdf.hpp"
 
-TfIdf::TfIdf(vector<unordered_map<string, int>> wordsInDocs)
+TfIdf::TfIdf()
 {
+}
+
+void TfIdf::run(vector<unordered_map<string, int>> wordsInDocs){
+
     this->keyWords = processKeyWords();
     this->idfRank = idf(wordsInDocs);
     this->tfRank = tf(wordsInDocs);
@@ -142,78 +146,86 @@ void TfIdf::showScore()
     for (size_t i = 0; i < lineScore.size(); i++)
     {
         vector<double> score = lineScore.at(i);
-
-        int sortedIndex = findMaxIndex(score);
-        cout << "A frase " << i + 1  << " tem mais relevancia para o documento " << sortedIndex + 1 << endl;
-    }
-}
-
-int TfIdf::partition(vector<double> &arr, std::vector<int> &indices, int low, int high)
-{
-    double pivot = arr[indices[high]];
-    int i = (low - 1);
-
-    for (int j = low; j < high; j++)
-    {
-        if (arr[indices[j]] <= pivot)
+        vector<int> rank = sortedIndices(score);
+    
+        cout << "A frase " << i + 1 << " tem mais relevancia para os seguintes documentos: " << endl;
+        for (size_t j = 0; j < rank.size(); j++)
         {
-            i++;
-            std::swap(indices[i], indices[j]);
+            cout << "Documento "<<rank[j] + 1 <<endl;
         }
-    }
-    std::swap(indices[i + 1], indices[high]);
-    return (i + 1);
-}
-
-void TfIdf::quickSort(vector<double> &arr, vector<int> &indices, int low, int high)
-{
-    if (low < high)
-    {
-        int pi = partition(arr, indices, low, high);
-
-        quickSort(arr, indices, low, pi - 1);
-        quickSort(arr, indices, pi + 1, high);
+        
     }
 }
 
-vector<int> TfIdf::sortByIndex(vector<double> &arr)
+// Merges two halves of indices based on the values in `arr`
+void TfIdf::merge(const std::vector<double> &arr, std::vector<int> &indices, int left, int mid, int right)
 {
-    vector<int> indices(arr.size());
-    for (size_t i = 0; i < arr.size(); i++)
+    int leftSize = mid - left + 1;
+    int rightSize = right - mid;
+
+    std::vector<int> leftIndices(leftSize);
+    std::vector<int> rightIndices(rightSize);
+
+    for (int i = 0; i < leftSize; i++)
+        leftIndices[i] = indices[left + i];
+    for (int j = 0; j < rightSize; j++)
+        rightIndices[j] = indices[mid + 1 + j];
+
+    int i = 0, j = 0, k = left;
+    while (i < leftSize && j < rightSize)
     {
+        if (arr[leftIndices[i]] >= arr[rightIndices[j]])
+        {
+            indices[k] = leftIndices[i];
+            i++;
+        }
+        else
+        {
+            indices[k] = rightIndices[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < leftSize)
+    {
+        indices[k] = leftIndices[i];
+        i++;
+        k++;
+    }
+
+    while (j < rightSize)
+    {
+        indices[k] = rightIndices[j];
+        j++;
+        k++;
+    }
+}
+
+// Recursive merge sort on indices
+void TfIdf::mergeSort(const std::vector<double> &arr, std::vector<int> &indices, int left, int right)
+{
+    if (left < right)
+    {
+        int mid = left + (right - left) / 2;
+        mergeSort(arr, indices, left, mid);
+        mergeSort(arr, indices, mid + 1, right);
+        merge(arr, indices, left, mid, right);
+    }
+}
+
+// Main function to return sorted indices based on vector of doubles
+vector<int> TfIdf::sortedIndices(const vector<double> &arr)
+{
+    int n = arr.size();
+    std::vector<int> indices(n);
+    for (int i = 0; i < n; i++)
         indices[i] = i;
-    }
 
-    cout << "Sorted array" << endl;
-    quickSort(arr, indices, 0, arr.size() - 1);
-    for (size_t i = 0; i < arr.size(); i++)
-    {
-        cout << arr[i] << ", ";
-    }
-
-    cout << endl;
+    mergeSort(arr, indices, 0, n - 1);
     return indices;
 }
-
-int TfIdf::findMaxIndex(const std::vector<double> &arr)
-{
-    if (arr.empty())
-    {
-        return -1;
-    }
-
-    int indice_maior = 0;
-
-    for (size_t i = 1; i < arr.size(); i++)
-    {
-        if (arr[i] > arr[indice_maior])
-        {
-            indice_maior = i;
-        }
-    }
-
-    return indice_maior;
-}
+ 
 
 vector<string> TfIdf::splitString(string str)
 {

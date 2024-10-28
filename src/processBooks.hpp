@@ -32,6 +32,8 @@ public:
     unordered_map<string, int> processBook(string path);
     unordered_set<string> processStopWords();
     vector<string> splitString(string str);
+
+    void run();
 };
 
 #endif

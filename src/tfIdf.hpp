@@ -11,18 +11,17 @@ class TfIdf
 {
 
 public:
-
     unordered_map<string, vector<double>> tfRank;
-
 
     unordered_map<string, double> idfRank;
 
-    
     vector<vector<string>> keyWords;
     unordered_map<string, vector<double>> wordsScore;
     vector<vector<double>> lineScore;
 
-    TfIdf(vector<unordered_map<string, int>> wordsInDocs);
+    void run(vector<unordered_map<string, int>> wordsInDocs);
+
+    TfIdf();
 
     unordered_map<string, vector<double>> tf(vector<unordered_map<string, int>> wordsInDocs);
     unordered_map<string, double> idf(vector<unordered_map<string, int>> wordsInDocs);
@@ -35,12 +34,14 @@ public:
     void rankScore(vector<double> score);
     vector<double> sumVector(vector<double> vec, vector<double> sum);
 
-    int partition(std::vector<double> &arr, std::vector<int> &indices, int low, int high);
-    void quickSort(std::vector<double> &arr, std::vector<int> &indices, int low, int high);
-    vector<int> sortByIndex(std::vector<double> &arr);
-    int findMaxIndex(const std::vector<double> &arr);
+    void merge(const vector<double> &arr, vector<int> &indices, int left, int mid, int right);
+    void mergeSort(const vector<double> &arr, vector<int> &indices, int left, int right);
+    vector<int> sortedIndices(const std::vector<double>& arr);
+
 
     void showScore();
+
+
 };
 
 #endif
