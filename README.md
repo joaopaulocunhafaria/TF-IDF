@@ -73,7 +73,7 @@ Foi utilizado um vector para armazenar os valores, pois, apesar de ter um tempo 
 ## Fluxograma
 O percurso do algoritmo passa pelos arquivos **main** (inicializador do programa), **processBook** (que processa o conteúdo dos livros na pasta datasets) e **tfidf** (responsável por realizar os cálculos TF/IDF). 
 1. **main**: o `main` é responsável por chamar o construtor `processBook` e inicializar o programa com a função `run`; também é responsável por informar quantos livros serão processados.
-2. **processBook**: A classe `ProcessBook`, localizada na pasta `processBook`, consiste em um construtor e funções para o processamento e variáveis Globais:
+2. **processBook**: A classe `ProcessBook`, localizado no arquivo `processBook`, consiste em um construtor e funções para o processamento e variáveis Globais:
    - **`processBook()`**: construtor responsável por salvar, em `booksQuantity`, a quantidade de livros que será processada.
    - **`run()`**: função responsável por inicializar e controlar as etapas para o processamento das palavras dos arquivos.
 
@@ -86,10 +86,17 @@ O percurso do algoritmo passa pelos arquivos **main** (inicializador do programa
      
 - **`processStopWords()`**: função responsável pela leitura das palavras que têm menos relevância para o processamento.
 - **`processWords()`**: função responsável pela leitura dos livros, sendo que ela realiza a normalização das palavras. Ou seja, o texto é lido e tratado, em `processLine()`, para remover qualquer sinal de pontuação e acentuação. Além disso, essa função é responsável por excluir as palavras menos relevantes que foram lidas em `processStopWords()`.
+  
+> O construtor `TfIdf()` e a função `TfIdf::run()`, que estão em `processBook::run()`, são responsáveis por instanciar e executar a classe `TfIdf`. 
+
+3. **tfidf**: A classe `IfIdf` localizado no arquivo `tfidf`, tem como objetivo de classificar o conjunto de documentos(livros) de acordo com a relevância de cada um em relação a frases de pesquisa específicas, utilizando a métrica TF/IDF para calcular essa relevância:
+ - **`IfIdf()`**
+ - **`run()`**
+ - **`processBook()`**
+ - **`processBook()`**
 
 
-
-## COMPILAÇÃO E EXECUÇÃO
+## COMPILAÇÃO E EXECUÇÃO 
 
 | Comando     | Função                                                                 |
 | ----------- | ---------------------------------------------------------------------- |
