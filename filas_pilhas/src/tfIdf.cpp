@@ -55,7 +55,7 @@ vector<TfWord> TfIdf::tf(vector<vector<PalavraContagem>> wordsInDocs)
         for (auto key : line)
         {
 
-            if (find(processedKeys.begin(), processedKeys.end(), key) != processedKeys.end())
+            if (find(processedKeys.begin(), processedKeys.end(), key) == processedKeys.end())
             {
 
                 vector<double> rank;
