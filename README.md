@@ -90,8 +90,10 @@ O percurso do algoritmo passa pelos arquivos **main** (inicializador do programa
 > O construtor `TfIdf()` e a função `TfIdf::run()`, que estão em `processBook::run()`, são responsáveis por instanciar e executar a classe `TfIdf`. 
 
 3. **tfidf**: A classe `IfIdf` localizado no arquivo `tfidf`, tem como objetivo de classificar o conjunto de documentos(livros) de acordo com a relevância de cada um em relação a frases de pesquisa específicas, utilizando a métrica TF/IDF para calcular essa relevância:
- - **`IfIdf()`**
- - **`run()`**
+ - **`IfIdf()`**:
+ - **`run()`**:
+
+
  - **`processBook()`**
  - **`processBook()`**
 
