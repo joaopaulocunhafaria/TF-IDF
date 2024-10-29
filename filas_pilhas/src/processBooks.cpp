@@ -17,17 +17,17 @@ void ProcessBooks::run()
 
     tfIdf.run(wordsInDocument);
 }
-unordered_set<string> ProcessBooks::processStopWords()
+vector<string> ProcessBooks::processStopWords()
 {
 
     ifstream file(STOPWORDSPATH);
 
-    unordered_set<string> stopWords;
+    vector<string> stopWords;
     string line;
 
     while (getline(file, line))
     {
-        stopWords.insert(line);
+        stopWords.push_back(line);
     }
 
     file.close();
@@ -59,7 +59,7 @@ vector<string> ProcessBooks::processLine(string line)
         {
             string word = lineWords.at(i);
 
-            if (stopWords.find(word) == stopWords.end() && !word.empty() && word != "")
+            if (find(stopWords.begin(),stopWords.end(),word)  == stopWords.end()&& !word.empty() && word != "")
             {
                 if (word.begin() != word.end())
                 {

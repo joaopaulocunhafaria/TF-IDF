@@ -18,7 +18,7 @@ class ProcessBooks
 {
 
 public:
-    unordered_set<string> stopWords;
+    vector<string> stopWords;
 
     vector<vector<PalavraContagem>> wordsInDocument;
 
@@ -31,7 +31,7 @@ public:
     vector<string> processLine(string line);
     vector<vector<PalavraContagem>> processWords();
     unordered_map<string, int> processBook(string path);
-    unordered_set<string> processStopWords();
+    vector<string> processStopWords();
     vector<string> splitString(string str);
     int findIndex(const std::vector<PalavraContagem> &palavras, const std::string &palavra);
 

@@ -48,14 +48,14 @@ vector<TfWord> TfIdf::tf(vector<vector<PalavraContagem>> wordsInDocs)
     vector<TfWord> tfPerDoc;
     int docsQuantity = wordsInDocs.size();
 
-    unordered_set<string> processedKeys;
+    vector<string> processedKeys;
 
     for (auto line : keyWords)
     {
         for (auto key : line)
         {
 
-            if (processedKeys.find(key) == processedKeys.end())
+            if (find(processedKeys.begin(), processedKeys.end(), key) != processedKeys.end())
             {
 
                 vector<double> rank;
@@ -78,7 +78,7 @@ vector<TfWord> TfIdf::tf(vector<vector<PalavraContagem>> wordsInDocs)
                 tfPerDoc.push_back({key, rank});
             }
 
-            processedKeys.insert(key);
+            processedKeys.push_back(key);
         }
     }
     processedKeys.clear();
@@ -189,10 +189,10 @@ void TfIdf::showScore()
         vector<double> score = lineScore.at(i);
         vector<int> rank = sortedIndices(score);
 
-          cout << "A frase " << i + 1 << " tem mais relevancia para os seguintes documentos: " << endl;
+        cout << "A frase " << i + 1 << " tem mais relevancia para os seguintes documentos: " << endl;
         for (size_t j = 0; j < rank.size(); j++)
         {
-              cout << "Documento " << rank[j] + 1 << endl;
+            cout << "Documento " << rank[j] + 1 << endl;
         }
     }
 }
