@@ -22,11 +22,18 @@ O sistema receberá como entrada:
 1. Um conjunto de arquivos de texto contendo documentos aleatórios.
 2. Uma lista de frases de pesquisa, onde cada frase será comparada aos documentos para determinar a relevância de cada um.
 
-## Estruturas de Dados
+## Implementação e Estruturas de Dados 
+ 
 
-Para modelar o trabalho em questão, de forma a obter a melhor performance possível, foram utilizadas diversas estruturas de dados abordadas na disciplina de Algoritmos e Estruturas de Dados I. Foram empregadas, em sua maioria, estruturas de dados complexas ou de segunda ordem, ou seja, diferentes das estruturas primárias. Em cada etapa da implementação, foram usadas estruturas que melhor modelassem o problema a ser resolvido, e, em diferentes etapas, estruturas semelhantes foram usadas para resolver problemas distintos. Sendo assim, para cada etapa da solução, serão apresentadas as estruturas empregadas, exemplificando da melhor maneira possível a solução implementada.
+Para modelar o trabalho em questão, optou-se por duas abordagens distintas, com o objetivo de realizar um estudo completo sobre o impacto das estruturas de dados na eficiência de um programa. Inicialmente, implementaram-se os cálculos de busca TF/IDF utilizando estruturas de dados como Fila e `vector` em C++. Em um segundo momento, utilizou-se estruturas mais complexas para construir a solução em questão; nessa etapa, foram empregadas tabelas hash para implementar o algoritmo de busca. 
 
-## Leitura de Palavras
+A seguir, serão apresentadas as duas abordagens e como as estruturas de dados referidas foram utilizadas em cada uma, bem como considerações sobre o custo computacional de cada uma, além das vantagens e desvantagens encontradas ao utilizá-las.
+
+### Implementação com Tabelas Hash
+ 
+Inicalmente, para modelar o trabalho em questão, de forma a obter a melhor performance possível, foram utilizadas diversas estruturas de dados abordadas na disciplina de Algoritmos e Estruturas de Dados I. Foram empregadas, em sua maioria, estruturas de dados complexas ou de segunda ordem, ou seja, diferentes das estruturas primárias. Em cada etapa da implementação, foram usadas estruturas que melhor modelassem o problema a ser resolvido, e, em diferentes etapas, estruturas semelhantes foram usadas para resolver problemas distintos. Sendo assim, para cada etapa da solução, serão apresentadas as estruturas empregadas, exemplificando da melhor maneira possível a solução implementada.
+
+### Leitura de Palavras
 
 Como a entrada deste trabalho, tanto as frases quanto os documentos a serem ranqueados, estão em formato de arquivos `.txt`, é necessário ser capaz de acessar cada palavra de maneira eficiente. Para isso, todas as palavras a serem pesquisadas (**keywords**), após serem lidas do arquivo, foram armazenadas em um **unordered_set**, permitindo acesso rápido e eficiente. Isso porque o **unordered_set** oferece busca em tempo constante, O(1), em comparação ao **vector**, cuja busca tem custo linear, O(n). Esse ganho de performance é essencial quando lidamos com grandes volumes de dados.
 
@@ -68,7 +75,48 @@ Para armazenar essas informações, utilizou-se uma estrutura semelhante à empr
 Foi utilizado um vector para armazenar os valores, pois, apesar de ter um tempo de acesso pior quando comparado a outras opções possíveis, seu uso permite que os índices representem diretamente o ranking de cada documento. Dessa forma, de maneira semelhante à estrutura usada para armazenar os valores de TF, cada índice do array representa o ranking do respectivo documento. Ou seja, o primeiro valor do array corresponde ao ranking do documento 1, e assim sucessivamente.
 
 
+
 <a href="https://github.com/joaopaulocunhafaria/Faculdade/blob/dd1c6e58b73d0b8b527b2f6da8990a175572fc0b/AEDS%20II/TF-IDF/src/tfIdf.hpp#L22"> Acesse a declaração no código </a>
+
+### Implementação com Filas e Structs
+
+Em um segundo momento, implementou-se uma solução baseada no uso de Filas e Structs, para que fosse possível analisar o comportamento do algoritmo ao trabalhar com estruturas limitadas. Para viabilizar uma solução que atendesse minimamente aos requisitos propostos, foi necessário criar estruturas personalizadas auxiliares. A seguir, apresentaremos como essas estruturas foram criadas e modeladas para melhor cumprir seu papel, além dos contextos em que se mostraram necessárias.
+
+### Leitura de Palavras
+
+O processo de leitura de palavras provenientes dos arquivos de entrada, bem como do arquivo que contém as **stopWords**, foi a primeira etapa em que o uso de estruturas de dados mais sofisticadas impactou negativamente o desempenho do algoritmo. Dessa vez, utilizou-se estruturas do tipo Fila para armazenar as palavras a serem usadas posteriormente. Essa decisão teve grande impacto, pois nos processos seguintes, todas as vezes que se desejava buscar nesta base de palavras, o custo era \(O(n)\), ao invés de constante, como explicado anteriormente.
+
+### Contagem de Palavras
+
+Durante o processo de contagem de palavras, foi necessário abrir mão de estruturas tradicionais e, para modelar o problema da melhor forma possível com opções limitadas, recorreu-se ao uso de **Structs** em C++. O objetivo era simular uma estrutura de *<Chave, Valor>*, onde a chave representaria cada palavra e o valor, a quantidade de vezes que essa palavra aparece em um determinado arquivo. No entanto, de forma semelhante à implementação que usa tabelas hash, essa abordagem resolve a contagem para apenas um arquivo. Assim, foi necessário criar uma estrutura que simulasse uma matriz, onde cada linha representasse o enésimo documento e cada coluna, uma determinada palavra.
+
+A estrutura utilizada para modelar essa etapa foi um `vector` de `vectors`, onde cada `vector` armazena elementos do tipo `PalavraContagem`, um objeto que contém uma `string` e um contador.
+
+
+<a href="https://github.com/joaopaulocunhafaria/TF-IDF/blob/d933888e9790b118c9f6f1d3f83fe725b1a83148/filas_pilhas/src/processBooks.hpp#L23"> Acesse a declaração no código </a>    
+
+
+### Cálculo TF (Term Frequency)
+
+Para o cálculo de **Term Frequency (TF)**, utilizou-se uma abordagem semelhante, sendo necessário criar uma estrutura personalizada para modelar esta etapa. A situação exigiu uma estrutura um pouco diferente da modelada anteriormente, pois os valores armazenados na **Struct** seriam um conjunto de *<Chave, Valor>*; no entanto, desta vez, os valores armazenados foram uma Fila de `doubles`, onde cada elemento representa o cálculo de **TF** referente a uma palavra (chave da **Struct**). Houve novamente uma perda de desempenho no algoritmo devido à ausência das tabelas hash, que garantiriam uma maior eficiência.
+
+Além da queda de desempenho, a utilização de estruturas menos eficientes também exigiu uma maior quantidade de código, aumentando a complexidade da solução apresentada. Por exemplo, foi necessário implementar funções para percorrer todo o `vector` que contém as Structs e retornar o índice de um valor presente ou -1, caso a palavra não estivesse presente.
+
+A estrutura utilizada para modelar essa etapa foi um `vector` de elementos do tipo `PalavraTf`, um objeto que contém uma `string` como chave e uma Fila de `doubles` como valor.
+
+[Acesse a declaração no código](https://github.com/joaopaulocunhafaria/TF-IDF/blob/d933888e9790b118c9f6f1d3f83fe725b1a83148/filas_pilhas/src/tfIdf.hpp#L32)
+
+### Cálculo IDF (Inverse Document Frequency)
+
+De forma semelhante, o cálculo de **Inverse Document Frequency (IDF)** também exigiu a criação de uma **Struct** que armazena uma palavra e um valor do tipo `double` para representar o valor de **IDF** referente a essa palavra. Compilou-se esses elementos em uma Fila para garantir acesso a todos os valores armazenados. É importante destacar que, para este processo, foi necessário implementar outra função de busca no `vector`, uma vez que a **Struct** usada é diferente da anterior e, portanto, não permite o uso do mesmo método. Isso trouxe mais complexidade à solução e aumentou o custo computacional devido à ausência de tabelas hash.
+ 
+
+[Acesse a declaração no código](https://github.com/joaopaulocunhafaria/TF-IDF/blob/d933888e9790b118c9f6f1d3f83fe725b1a83148/filas_pilhas/src/tfIdf.hpp#L34)
+
+ 
+### Cálculo de Relevância TF/IDF
+ 
+
 
 ## Fluxograma
 O percurso do algoritmo passa pelos arquivos **main** (inicializador do programa), **processBook** (que processa o conteúdo dos livros na pasta datasets) e **tfidf** (responsável por realizar os cálculos TF/IDF). 
