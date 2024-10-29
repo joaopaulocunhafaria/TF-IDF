@@ -4,7 +4,7 @@ TfIdf::TfIdf()
 {
 }
 
-void TfIdf::run(vector<unordered_map<string, int>> wordsInDocs)
+void TfIdf::run(vector<vector<PalavraContagem>> wordsInDocs)
 {
 
     this->keyWords = processKeyWords();
@@ -16,9 +16,9 @@ void TfIdf::run(vector<unordered_map<string, int>> wordsInDocs)
     showScore();
 }
 
-unordered_map<string, double> TfIdf::idf(vector<unordered_map<string, int>> wordsInDocs)
+vector<IdfWord> TfIdf::idf(vector<vector<PalavraContagem>> wordsInDocs)
 {
-    unordered_map<string, double> result;
+    vector<IdfWord> result;
 
     int totalNumberOfDocuments = wordsInDocs.size();
     for (auto line : keyWords)
@@ -28,22 +28,24 @@ unordered_map<string, double> TfIdf::idf(vector<unordered_map<string, int>> word
             int numberOfDocsKeyAppers;
             for (int i = 0; i < totalNumberOfDocuments; i++)
             {
-                if (wordsInDocs[i].find(key) != wordsInDocs[i].end())
+
+                if (findIndex(wordsInDocs[i], key) != -1)
                 {
                     numberOfDocsKeyAppers++;
                 }
             }
 
-            result[key] = log(static_cast<double>(totalNumberOfDocuments) / 1 + static_cast<double>(numberOfDocsKeyAppers));
+            double idf = log(static_cast<double>(totalNumberOfDocuments) / 1 + static_cast<double>(numberOfDocsKeyAppers));
+            result.push_back({key, idf});
         }
     }
 
     return result;
 }
 
-unordered_map<string, vector<double>> TfIdf::tf(vector<unordered_map<string, int>> wordsInDocs)
+vector<TfWord> TfIdf::tf(vector<vector<PalavraContagem>> wordsInDocs)
 {
-    unordered_map<string, vector<double>> tfPerDoc;
+    vector<TfWord> tfPerDoc;
     int docsQuantity = wordsInDocs.size();
 
     unordered_set<string> processedKeys;
@@ -56,21 +58,29 @@ unordered_map<string, vector<double>> TfIdf::tf(vector<unordered_map<string, int
             if (processedKeys.find(key) == processedKeys.end())
             {
 
-                int howManyApperanceInEachDocument;
-                int totalTermsInDoc;
+                vector<double> rank;
                 for (int i = 0; i < docsQuantity; i++)
                 {
+                    int howManyApperanceInEachDocument = 0;
+                    int totalTermsInDoc;
+
                     totalTermsInDoc = wordsInDocs[i].size();
-                    howManyApperanceInEachDocument = wordsInDocs[i][key];
+
+                    int index = findIndex(wordsInDocs[i], key);
+                    if (index != -1)
+                    {
+                        howManyApperanceInEachDocument = wordsInDocs[i][index].contagem;
+                    }
                     double result = static_cast<double>(howManyApperanceInEachDocument) / static_cast<double>(totalTermsInDoc);
-                    tfPerDoc[key].push_back(result);
+
+                    rank.push_back(result);
                 }
+                tfPerDoc.push_back({key, rank});
             }
 
             processedKeys.insert(key);
         }
     }
-
     processedKeys.clear();
 
     return tfPerDoc;
@@ -142,10 +152,10 @@ vector<string> TfIdf::processLine(string line)
     return result;
 }
 
-unordered_map<string, vector<double>> TfIdf::calculateTfIdf()
+vector<TfWord> TfIdf::calculateTfIdf()
 {
 
-    unordered_map<string, vector<double>> score;
+    vector<TfWord> score;
 
     for (size_t i = 0; i < keyWords.size(); i++)
     {
@@ -156,13 +166,15 @@ unordered_map<string, vector<double>> TfIdf::calculateTfIdf()
             string key = line[j];
 
             vector<double> resultPerKey;
+            int tfIndex = findIndexTfRank(tfRank, key);
+            int idfIndex = findIndexIdfRank(idfRank, key);
 
-            for (size_t k = 0; k < tfRank[key].size(); k++)
+            for (size_t k = 0; k < tfRank[tfIndex].tfRate.size(); k++)
             {
-                resultPerKey.push_back(tfRank[key][k] * idfRank[key]);
+                resultPerKey.push_back(tfRank[tfIndex].tfRate[k] * idfRank[idfIndex].idfRate);
             }
 
-            score[key] = resultPerKey;
+            score.push_back({key, resultPerKey});
         }
     }
 
@@ -177,10 +189,10 @@ void TfIdf::showScore()
         vector<double> score = lineScore.at(i);
         vector<int> rank = sortedIndices(score);
 
-        cout << "A frase " << i + 1 << " tem mais relevancia para os seguintes documentos: " << endl;
+          cout << "A frase " << i + 1 << " tem mais relevancia para os seguintes documentos: " << endl;
         for (size_t j = 0; j < rank.size(); j++)
         {
-            cout << "Documento " << rank[j] + 1 << endl;
+              cout << "Documento " << rank[j] + 1 << endl;
         }
     }
 }
@@ -279,11 +291,12 @@ vector<vector<double>> TfIdf::calculateScore()
         vector<double> score(line.size(), 0.0);
         for (auto key : line)
         {
-            score = sumVector(score, wordsScore[key]);
+            int tfIdfIndex = findIndexTfRank(wordsScore, key);
+            score = sumVector(score, wordsScore[tfIdfIndex].tfRate);
         }
 
         result.push_back(score);
-    } 
+    }
 
     return result;
 }
@@ -296,4 +309,40 @@ vector<double> TfIdf::sumVector(vector<double> vec, vector<double> sum)
         result[i] = vec[i] + sum[i];
     }
     return result;
+}
+
+int TfIdf::findIndex(const std::vector<PalavraContagem> &palavras, const std::string &palavra)
+{
+    for (size_t i = 0; i < palavras.size(); ++i)
+    {
+        if (palavras[i].palavra == palavra)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int TfIdf::findIndexTfRank(const std::vector<TfWord> &palavras, const std::string &palavra)
+{
+    for (size_t i = 0; i < palavras.size(); ++i)
+    {
+        if (palavras[i].word == palavra)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int TfIdf::findIndexIdfRank(const std::vector<IdfWord> &palavras, const std::string &palavra)
+{
+    for (size_t i = 0; i < palavras.size(); ++i)
+    {
+        if (palavras[i].word == palavra)
+        {
+            return i;
+        }
+    }
+    return -1;
 }

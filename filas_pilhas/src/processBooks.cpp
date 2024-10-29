@@ -1,23 +1,21 @@
 #include "processBooks.hpp"
 
-
 ProcessBooks::ProcessBooks(int booksQuantity)
 {
 
     this->booksQuantity = booksQuantity;
-
 };
 
-void ProcessBooks::run(){
+void ProcessBooks::run()
+{
 
     this->stopWords = processStopWords();
 
     this->wordsInDocument = processWords();
 
     TfIdf tfIdf = TfIdf();
-    
-    tfIdf.run(wordsInDocument);
 
+    tfIdf.run(wordsInDocument);
 }
 unordered_set<string> ProcessBooks::processStopWords()
 {
@@ -33,18 +31,17 @@ unordered_set<string> ProcessBooks::processStopWords()
     }
 
     file.close();
-     return stopWords;
+    return stopWords;
 }
 
 vector<string> ProcessBooks::processLine(string line)
 {
 
     vector<string> result;
-    
+
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     wchar_t comAcentos[] = L"ÄÅÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛüúûùÇç";
     wchar_t semAcentos[] = L"AAAAAAaaaaaEEEEeeeeIIIIiiiiOOOOOoooooUUUuuuuCc";
-
 
     if (!line.empty())
     {
@@ -55,7 +52,7 @@ vector<string> ProcessBooks::processLine(string line)
         }
 
         line = converter.to_bytes(text);
-        
+
         vector<string> lineWords = splitString(line);
 
         for (size_t i = 0; i < lineWords.size(); i++)
@@ -78,7 +75,7 @@ vector<string> ProcessBooks::processLine(string line)
                                          [](unsigned char c)
                                          { return c == '.' || c == ',' || c == '!' || c == '?' || c == ':' || c == ';' || c == '"' || c == '\'' || c == '(' || c == ')' || c == '[' || c == ']' || c == '{' || c == '}' || c == '-' || c == '_'; }),
                                word.end());
-                     result.push_back(word);
+                    result.push_back(word);
                 }
             }
         }
@@ -102,18 +99,18 @@ vector<string> ProcessBooks::splitString(string str)
     return result;
 }
 
-vector<unordered_map<string, int>> ProcessBooks::processWords()
+vector<vector<PalavraContagem>> ProcessBooks::processWords()
 {
 
-    vector<unordered_map<string, int>> result;
+    vector<vector<PalavraContagem>> result;
 
     for (int i = 0; i < booksQuantity; i++)
     {
         string filePath = BOOKSPATH + to_string(i + 1) + ".txt";
-         
+
         ifstream file(filePath);
         string line;
-        unordered_map<string, int> wordCounter;
+        vector<PalavraContagem> wordCounter;
         while (getline(file, line))
         {
             if (!line.empty())
@@ -122,13 +119,32 @@ vector<unordered_map<string, int>> ProcessBooks::processWords()
 
                 for (auto word : lineWords)
                 {
-                    wordCounter[word]++;
+                    int indice = findIndex(wordCounter, word);
+                    if (indice != -1)
+                    {
+                        // Palavra já existe, incrementa o contador
+                        wordCounter[indice].contagem++;
+                    }
+                    else
+                    {
+                        // Palavra não existe, adiciona ao vetor com contagem inicial 1
+                        wordCounter.push_back({word, 1});
+                    }
                 }
             }
         }
         result.push_back(wordCounter);
         file.close();
-    }
+    } 
 
     return result;
+}
+
+int ProcessBooks::findIndex(const std::vector<PalavraContagem>& palavras, const std::string& palavra){
+    for (size_t i = 0; i < palavras.size(); ++i) {
+        if (palavras[i].palavra == palavra) {
+            return i;
+        }
+    }
+    return -1;
 }
