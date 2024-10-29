@@ -70,6 +70,23 @@ Foi utilizado um vector para armazenar os valores, pois, apesar de ter um tempo 
 
 <a href="https://github.com/joaopaulocunhafaria/Faculdade/blob/dd1c6e58b73d0b8b527b2f6da8990a175572fc0b/AEDS%20II/TF-IDF/src/tfIdf.hpp#L22"> Acesse a declaração no código </a>
 
+## Fluxograma
+O percurso do algoritmo passa pelos arquivos **main** (inicializador do programa), **processBook** (que processa o conteúdo dos livros na pasta datasets) e **tfidf** (responsável por realizar os cálculos TF/IDF). 
+1. **main**: o `main` é responsável por chamar o construtor `processBook` e inicializar o programa com a função `run`; também é responsável por informar quantos livros serão processados.
+2. **processBook**: A classe `ProcessBook`, localizada na pasta `processBook`, consiste em um construtor e funções para o processamento e variáveis Globais:
+   - **`processBook()`**: construtor responsável por salvar, em `booksQuantity`, a quantidade de livros que será processada.
+   - **`run()`**: função responsável por inicializar e controlar as etapas para o processamento das palavras dos arquivos.
+
+         void ProcessBooks::run()
+           this->stopWords = processStopWords();
+           this->wordsInDocument = processWords();
+           TfIdf tfIdf = TfIdf(); 
+           tfIdf.run(wordsInDocument);
+         }
+     
+- **`processStopWords()`**: função responsável pela leitura das palavras que têm menos relevância para o processamento.
+- **`processWords()`**: função responsável pela leitura dos livros, sendo que ela realiza a normalização das palavras. Ou seja, o texto é lido e tratado, em `processLine()`, para remover qualquer sinal de pontuação e acentuação. Além disso, essa função é responsável por excluir as palavras menos relevantes que foram lidas em `processStopWords()`.
+
 
 
 ## COMPILAÇÃO E EXECUÇÃO
