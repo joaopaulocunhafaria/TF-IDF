@@ -21,13 +21,12 @@ O sistema receberá como entrada:
 
 1. Um conjunto de arquivos de texto contendo documentos aleatórios.
 2. Uma lista de frases de pesquisa, onde cada frase será comparada aos documentos para determinar a relevância de cada um.
+3. 
+## Implementação e Estruturas de Dados
 
-## Implementação e Estruturas de Dados 
- 
+Para modelar o trabalho em questão, optou-se por duas abordagens distintas, com o objetivo de realizar um estudo completo sobre o impacto das estruturas de dados na eficiência de um programa. Inicialmente, implementaram-se os cálculos de busca TF/IDF utilizando estruturas mais complexas, como **tabelas hash**, para implementar o algoritmo de busca com melhor eficiência. Em um segundo momento, utilizou-se uma abordagem alternativa, com estruturas de dados mais simples, como Fila e `vector` em C++, a fim de comparar o desempenho e compreender melhor os impactos no custo computacional.
 
-Para modelar o trabalho em questão, optou-se por duas abordagens distintas, com o objetivo de realizar um estudo completo sobre o impacto das estruturas de dados na eficiência de um programa. Inicialmente, implementaram-se os cálculos de busca TF/IDF utilizando estruturas de dados como Fila e `vector` em C++. Em um segundo momento, utilizou-se estruturas mais complexas para construir a solução em questão; nessa etapa, foram empregadas tabelas hash para implementar o algoritmo de busca. 
-
-A seguir, serão apresentadas as duas abordagens e como as estruturas de dados referidas foram utilizadas em cada uma, bem como considerações sobre o custo computacional de cada uma, além das vantagens e desvantagens encontradas ao utilizá-las.
+A seguir, serão apresentadas as duas abordagens, incluindo a descrição das estruturas de dados utilizadas em cada caso, assim como considerações sobre o custo computacional de cada abordagem e uma análise das vantagens e desvantagens encontradas no uso de cada estrutura.
 
 ### Implementação com Tabelas Hash
  
