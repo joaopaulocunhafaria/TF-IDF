@@ -168,4 +168,4 @@ Para a coleta de dados (o tempo de execução de cada algoritmo), foram utilizad
 | make        | Executa a compilação do programa utilizando o gcc, e o resultado vai para a pasta build |
 | make run    | Executa o programa da pasta build após a realização da compilação       |
 
-Para acessar as configurações do computador utilizado para executar, <a href="https://github.com/AndersonR-S/repos_And/blob/main/img/configuracaoForLinux_NitroAN515-51.png">clique aqui.</a>
+> Para acessar as configurações do computador utilizado, <a href="https://github.com/AndersonR-S/repos_And/blob/main/img/configuracaoForLinux_NitroAN515-51.png">clique aqui.</a>
