@@ -159,6 +159,7 @@ O tipo de manipulação de dados é fundamental para a performance geral do algo
 Para a coleta de dados (o tempo de execução de cada algoritmo), foram utilizados 60 livros/textos diferentes, assim como as palavras-chave, que foram extraídas desses próprios textos.
 
 <img src="img/tabela_1.png" alt="Texto Alternativo" width="500"/>
+> Para acessar as configurações do computador utlizado para executar <a href="https://github.com/AndersonR-S/repos_And/blob/main/img/configuracaoForLinux_NitroAN515-51.png"> Clique aqui. </a> 
 
 ## COMPILAÇÃO E EXECUÇÃO 
 
