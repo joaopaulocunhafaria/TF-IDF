@@ -112,10 +112,6 @@ De forma semelhante, o cálculo de **Inverse Document Frequency (IDF)** também 
 
 [Acesse a declaração no código](https://github.com/joaopaulocunhafaria/TF-IDF/blob/d933888e9790b118c9f6f1d3f83fe725b1a83148/filas_pilhas/src/tfIdf.hpp#L34)
 
- 
-### Cálculo de Relevância TF/IDF
- 
-
 
 ### Fluxograma
 O percurso do algoritmo passa pelos arquivos **main** (inicializador do programa), **processBook** (que processa o conteúdo dos livros na pasta datasets) e **tfidf** (responsável por realizar os cálculos TF/IDF). 
