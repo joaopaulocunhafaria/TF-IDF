@@ -156,9 +156,11 @@ O percurso do algoritmo passa pelos arquivos **main** (inicializador do programa
  - **`calculateScore()`**: O objetivo é calcular uma pontuação agregada para um conjunto de palavras e seus respectivos valores de pontuação , somando vetores de pontuação em `calculateScore` usando a função `sumVector()`.
 - **`showScore()`**: Esta função exibe a relevância de cada frase em relação aos documentos, listando-os em ordem decrescente de relevância com base nas pontuações armazenadas em `lineScore`. Ela utiliza a função `sortedIndices` para classificar os documentos e apresenta os resultados de forma clara.
 
-### Fluxograma
+### Diferença de Algoritmo com Tabela Hash e Filas e Pilhas
 
-![TABELA ](img/tabela_1.png)
+O tipo de manipulação de dados é fundamental para a performance geral do algoritmo, como é demonstrado na tabela abaixo. A primeira coluna, "SEM HASH", representa o algoritmo baseado em filas e pilhas (FP), que teve um tempo de execução superior em relação à segunda coluna, "COM HASH", que mostra um algoritmo com tabela hash. A diferença varia de aproximadamente 186% a 1086%. Isso demonstra que a utilização da tabela hash é mais eficiente na resolução do problema inicial, que é calcular o TF/IDF.
+
+Para a coleta de dados (o tempo de execução de cada algoritmo), foram utilizados 60 livros/textos diferentes, assim como as palavras-chave, que foram extraídas desses próprios textos.
 
 <img src="img/tabela_1.png" alt="Texto Alternativo" width="500"/>
 
