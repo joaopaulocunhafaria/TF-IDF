@@ -154,7 +154,7 @@ O percurso do algoritmo passa pelos arquivos **main** (inicializador do programa
 
 ### Diferença de Algoritmo com Tabela Hash e Filas e Pilhas
 
-O tipo de manipulação de dados é fundamental para a performance geral do algoritmo, como é demonstrado na tabela abaixo. A primeira coluna, "SEM HASH", representa o algoritmo baseado em filas e pilhas (FP), que teve um tempo de execução superior em relação à segunda coluna, "COM HASH", que mostra um algoritmo com tabela hash. A diferença varia de aproximadamente 186% a 1086%. Isso demonstra que a utilização da tabela hash é mais eficiente na resolução do problema inicial, que é calcular o TF/IDF.
+O tipo de manipulação de dados é fundamental para a performance geral do algoritmo, como é demonstrado na tabela abaixo. A primeira coluna, "SEM HASH", representa o algoritmo baseado em filas e pilhas (FP), que teve um tempo de execução inferior em relação à segunda coluna, "COM HASH", que mostra um algoritmo com tabela hash. A diferença varia de aproximadamente 186% a 1086%. Isso demonstra que a utilização da tabela hash é mais eficiente na resolução do problema inicial, que é calcular o TF/IDF.
 
 Para a coleta de dados (o tempo de execução de cada algoritmo), foram utilizados 60 livros/textos diferentes, assim como as palavras-chave, que foram extraídas desses próprios textos.
 
@@ -168,4 +168,18 @@ Para a coleta de dados (o tempo de execução de cada algoritmo), foram utilizad
 | make        | Executa a compilação do programa utilizando o gcc, e o resultado vai para a pasta build |
 | make run    | Executa o programa da pasta build após a realização da compilação       |
 
-> Para acessar as configurações do computador utilizado, <a href="https://github.com/AndersonR-S/repos_And/blob/main/img/configuracaoForLinux_NitroAN515-51.png">clique aqui.</a>
+## AMBIENTE DE EXECUÇÃO
+ <table border="1" align="center">
+      <tr>
+        <td>Sistema Operacional </td>
+        <td>Debian 12 - "Bookworm"</td>
+      </tr>
+      <tr>
+        <td>Compilador </td>
+        <td>G++ 12.2.0</td>
+      </tr>
+      <tr>
+        <td>Hardware </td>
+        <td>11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz, 24GB RAM, 512GB SSD</td>
+      </tr>   
+ </table>
