@@ -37,7 +37,7 @@ unordered_map<string, double> TfIdf::idf(vector<unordered_map<string, int>> word
             result[key] = log(static_cast<double>(totalNumberOfDocuments) / 1 + static_cast<double>(numberOfDocsKeyAppers));
         }
     }
- 
+
     return result;
 }
 
@@ -51,20 +51,18 @@ unordered_map<string, vector<double>> TfIdf::tf(vector<unordered_map<string, int
     for (auto line : keyWords)
     {
         for (auto key : line)
-        { 
+        {
             if (processedKeys.find(key) == processedKeys.end())
             {
 
                 int howManyApperanceInEachDocument;
                 int totalTermsInDoc;
-          
-          
 
                 for (int i = 0; i < docsQuantity; i++)
                 {
                     totalTermsInDoc = wordsInDocs[i].size();
                     howManyApperanceInEachDocument = wordsInDocs[i][key];
-                   
+
                     double result = static_cast<double>(howManyApperanceInEachDocument) / static_cast<double>(totalTermsInDoc);
                     tfPerDoc[key].push_back(result);
                 }
@@ -72,7 +70,7 @@ unordered_map<string, vector<double>> TfIdf::tf(vector<unordered_map<string, int
 
             processedKeys.insert(key);
         }
-    } 
+    }
     processedKeys.clear();
 
     return tfPerDoc;
@@ -178,12 +176,16 @@ void TfIdf::showScore()
     {
         vector<double> score = lineScore.at(i);
         vector<int> rank = sortedIndices(score);
+        
+        cout << "Rank de relevancia para a frase " << i + 1 << ": " << endl;
+        cout << "Documentos:  ";
 
-       cout << "A frase " << i + 1 << " tem mais relevancia para os seguintes documentos: " << endl;
         for (size_t j = 0; j < rank.size(); j++)
         {
-           cout << "Documento " << rank[j] + 1 << endl;
+            cout << rank[j] + 1 << ", ";
         }
+        cout << endl
+             << endl;
     }
 }
 
@@ -285,7 +287,7 @@ vector<vector<double>> TfIdf::calculateScore()
         }
 
         result.push_back(score);
-    } 
+    }
 
     return result;
 }
