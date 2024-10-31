@@ -21,7 +21,7 @@ int main()
 
     std::chrono::duration<double> duration = end - start;
 
-    cout << "Durantion: " <<  duration.count() << endl; 
+    cout << "Tempo de execucao: " <<  duration.count() << endl; 
     
     return 0;
 }

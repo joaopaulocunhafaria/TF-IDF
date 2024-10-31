@@ -189,11 +189,14 @@ void TfIdf::showScore()
         vector<double> score = lineScore.at(i);
         vector<int> rank = sortedIndices(score);
 
-        cout << "A frase " << i + 1 << " tem mais relevancia para os seguintes documentos: " << endl;
+        cout << "Rank de relevancia para a frase " << i + 1 << ": " << endl;
+        cout << "Documentos:  ";
+
         for (size_t j = 0; j < rank.size(); j++)
         {
-            cout << "Documento " << rank[j] + 1 << endl;
+            cout << rank[j] + 1 << ", ";
         }
+        cout << endl<< endl;
     }
 }
 
