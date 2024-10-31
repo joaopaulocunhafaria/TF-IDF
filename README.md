@@ -121,6 +121,26 @@ Para isso, é possível utilizar a mesma estrutura empregada no cálculo de **Te
 [Acesse a declaração no código](https://github.com/joaopaulocunhafaria/TF-IDF/blob/0a7299a61a1f16bb800e782aff7195cdee4b70f4/filas_pilhas/src/tfIdf.hpp#L37)
 
 
+### Comparacao de Implementação com Tabela Hash X Filas e Pilhas
+
+O tipo de manipulação de dados é fundamental para a performance geral do algoritmo, como é demonstrado na tabela abaixo. A primeira coluna, "SEM HASH", representa o algoritmo baseado em filas e pilhas (FP), que teve um tempo de execução inferior em relação à segunda coluna, "COM HASH", que mostra um algoritmo com tabela hash. A diferença varia de aproximadamente 186% a 1086%. Isso demonstra que a utilização da tabela hash é mais eficiente na resolução do problema inicial, que é calcular o TF/IDF.
+
+Para a coleta de dados (o tempo de execução de cada algoritmo), foram utilizados 60 livros/textos diferentes, assim como as palavras-chave, que foram extraídas desses próprios textos.
+
+<img src="img/tabela_1.png" alt="Texto Alternativo" width="500"/>
+
+
+## Conclusão 
+
+Através da análise de ambas as implementações propostas, tanto usando estruturas do tipo tabela hash quanto utilizando apenas filas e pilhas, somos capazes de inferir conclusões enfáticas a respeito do desempenho de cada abordagem. Para resolver de maneira eficaz o problema proposto pela implementação do algoritmo TF/IDF, é necessário, em diversas ocasiões, realizar operações de pesquisa e inserção em estruturas de dados específicas. Nesse contexto, torna-se evidente o motivo da performance consideravelmente inferior da implementação que utiliza filas e pilhas em detrimento das tabelas hash. 
+
+Como citado anteriormente, o tempo médio de pesquisa em tabelas hash é calculado em **O(1)**, ou seja, com custo constante. Já nas listas, o custo médio de pesquisa é **O(n)**. Com essas informações, e considerando o volume de dados abordados neste trabalho — as palavras presentes em cada documento de pesquisa —, fica claro que o uso de tabelas hash é muito mais eficiente.
+
+Vamos observar a última operação de ambas as implementações, o cálculo de relevância TF/IDF, responsável por multiplicar as métricas TF e IDF. Em um cenário com tabelas hash, ao pesquisar uma palavra para obter seu ranking de TF, seria necessário um custo constante; considerando uma quantidade **D** de palavras, teríamos um custo de: `D * O(1)`. No contexto em que se utilizam filas para o mesmo propósito, cada pesquisa exigiria um custo linear. Para uma quantidade **D** de palavras, teríamos, então, um custo de: `D * O(n)`. Observando apenas esse último processo, podemos entender o impacto que a estrutura de dados pode ter na eficiência de um algoritmo, convertendo uma solução com custo **O(n)** em uma de custo **O(n²)**.
+
+Por fim, é necessário ressaltar que, embora as tabelas hash tenham apresentado desempenho superior às filas e pilhas, a solução deste algoritmo pode ser aprimorada com o uso de estruturas de dados ainda mais complexas, que poderiam melhorar ainda mais a eficiência do algoritmo. Como exemplo, podemos citar o uso de **grafos ponderados** para cálculo e armazenamento dos resultados. Dessa forma, após o processamento de cada palavra, o retorno de informações poderia se basear no grau de conexão entre uma palavra e um documento específico. Essa abordagem abre caminhos para implementações ainda mais eficientes e sofisticadas, oferecendo resultados ainda melhores.
+
+
 
 ### Fluxograma
 O percurso do algoritmo passa pelos arquivos **main** (inicializador do programa), **processBook** (que processa o conteúdo dos livros na pasta datasets) e **tfidf** (responsável por realizar os cálculos TF/IDF). 
@@ -160,14 +180,6 @@ O percurso do algoritmo passa pelos arquivos **main** (inicializador do programa
  - **`calculateTfIdf()`**: calcular o TF-IDF de cada palavra em um conjunto de documentos. 
  - **`calculateScore()`**: O objetivo é calcular uma pontuação agregada para um conjunto de palavras e seus respectivos valores de pontuação , somando vetores de pontuação em `calculateScore` usando a função `sumVector()`.
 - **`showScore()`**: Esta função exibe a relevância de cada frase em relação aos documentos, listando-os em ordem decrescente de relevância com base nas pontuações armazenadas em `lineScore`. Ela utiliza a função `sortedIndices` para classificar os documentos e apresenta os resultados de forma clara.
-
-### Diferença de Algoritmo com Tabela Hash e Filas e Pilhas
-
-O tipo de manipulação de dados é fundamental para a performance geral do algoritmo, como é demonstrado na tabela abaixo. A primeira coluna, "SEM HASH", representa o algoritmo baseado em filas e pilhas (FP), que teve um tempo de execução inferior em relação à segunda coluna, "COM HASH", que mostra um algoritmo com tabela hash. A diferença varia de aproximadamente 186% a 1086%. Isso demonstra que a utilização da tabela hash é mais eficiente na resolução do problema inicial, que é calcular o TF/IDF.
-
-Para a coleta de dados (o tempo de execução de cada algoritmo), foram utilizados 60 livros/textos diferentes, assim como as palavras-chave, que foram extraídas desses próprios textos.
-
-<img src="img/tabela_1.png" alt="Texto Alternativo" width="500"/>
 
 ## COMPILAÇÃO E EXECUÇÃO 
 
