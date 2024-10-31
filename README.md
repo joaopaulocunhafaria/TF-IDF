@@ -123,9 +123,9 @@ Para isso, é possível utilizar a mesma estrutura empregada no cálculo de **Te
 
 ### Comparação de Implementação  (Tabela Hash X Filas e Pilhas)
 
-O tipo de manipulação de dados é fundamental para a performance geral do algoritmo, como é demonstrado na tabela abaixo. A primeira coluna, "SEM HASH", representa o algoritmo baseado em filas e pilhas (FP), que teve um tempo de execução inferior em relação à segunda coluna, "COM HASH", que mostra um algoritmo com tabela hash. A diferença varia de aproximadamente 186% a 1086%. Isso demonstra que a utilização da tabela hash é mais eficiente na resolução do problema inicial, que é calcular o TF/IDF.
+A escolha da estrutura de dados impacta diretamente a performance do algoritmo, como ilustrado na tabela abaixo. A coluna "SEM HASH" representa o tempo de execução do algoritmo que utiliza filas e pilhas (FP), enquanto a coluna "COM HASH" mostra o tempo para um algoritmo otimizado com tabela hash. Observa-se uma diferença significativa de tempo, variando de aproximadamente 785% a 1112%. Isso demonstra que o uso de uma tabela hash é substancialmente mais eficiente para resolver o problema de cálculo de TF/IDF, reduzindo o tempo de processamento em diversas situações.
 
-Para a coleta de dados (o tempo de execução de cada algoritmo), foram utilizados 60 livros/textos diferentes, assim como as palavras-chave, que foram extraídas desses próprios textos.
+Para a coleta de dados (medição do tempo de execução de cada algoritmo), foram utilizados diferentes livros/textos, dos quais foram extraídas palavras-chave específicas. A primeira coluna da tabela mostra o tamanho total dos textos, enquanto a segunda coluna exibe o tamanho das frases-chave.
 
 <img src="img/tabela_1.png" alt="Texto Alternativo" width="500"/>
 
