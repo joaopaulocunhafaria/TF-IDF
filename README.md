@@ -21,7 +21,7 @@ O sistema receberá como entrada:
 
 1. Um conjunto de arquivos de texto contendo documentos aleatórios.
 2. Uma lista de frases de pesquisa, onde cada frase será comparada aos documentos para determinar a relevância de cada um.
-3. 
+   
 ## Implementação e Estruturas de Dados
 
 Para modelar o trabalho em questão, optou-se por duas abordagens distintas, com o objetivo de realizar um estudo completo sobre o impacto das estruturas de dados na eficiência de um programa. Inicialmente, implementaram-se os cálculos de busca TF/IDF utilizando estruturas mais complexas, como **tabelas hash**, para implementar o algoritmo de busca com melhor eficiência. Em um segundo momento, utilizou-se uma abordagem alternativa, com estruturas de dados mais simples, como Fila e `vector` em C++, a fim de comparar o desempenho e compreender melhor os impactos no custo computacional.
@@ -111,6 +111,15 @@ De forma semelhante, o cálculo de **Inverse Document Frequency (IDF)** também 
  
 
 [Acesse a declaração no código](https://github.com/joaopaulocunhafaria/TF-IDF/blob/d933888e9790b118c9f6f1d3f83fe725b1a83148/filas_pilhas/src/tfIdf.hpp#L34)
+
+### Cálculo de Relevância TF/IDF
+
+De maneira semelhante à abordagem realizada na primeira implementação, com tabelas hash, o cálculo de relevância **TF/IDF** foi feito usando estruturas similares às utilizadas no cálculo de **Term Frequency (TF)**. Como o resultado final será a relação (ou ranking) de cada palavra em relação a todos os documentos, é necessário uma estrutura que armazene uma palavra (chave) e uma Fila de `doubles`, que representará o ranking dessa palavra nos documentos.
+
+Para isso, é possível utilizar a mesma estrutura empregada no cálculo de **Term Frequency (TF)**. Sendo assim, para modelar bem esta etapa do processo, foi utilizado um array da *struct* do tipo `PalavraTf` para armazenar o ranking de relevância final de cada palavra.
+
+[Acesse a declaração no código](https://github.com/joaopaulocunhafaria/TF-IDF/blob/0a7299a61a1f16bb800e782aff7195cdee4b70f4/filas_pilhas/src/tfIdf.hpp#L37)
+
 
 
 ### Fluxograma
