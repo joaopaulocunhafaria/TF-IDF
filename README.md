@@ -21,7 +21,7 @@ O sistema receberá como entrada:
 
 1. Um conjunto de arquivos de texto contendo documentos aleatórios.
 2. Uma lista de frases de pesquisa, onde cada frase será comparada aos documentos para determinar a relevância de cada um.
-3. 
+   
 ## Implementação e Estruturas de Dados
 
 Para modelar o trabalho em questão, optou-se por duas abordagens distintas, com o objetivo de realizar um estudo completo sobre o impacto das estruturas de dados na eficiência de um programa. Inicialmente, implementaram-se os cálculos de busca TF/IDF utilizando estruturas mais complexas, como **tabelas hash**, para implementar o algoritmo de busca com melhor eficiência. Em um segundo momento, utilizou-se uma abordagem alternativa, com estruturas de dados mais simples, como Fila e `vector` em C++, a fim de comparar o desempenho e compreender melhor os impactos no custo computacional.
@@ -112,12 +112,37 @@ De forma semelhante, o cálculo de **Inverse Document Frequency (IDF)** também 
 
 [Acesse a declaração no código](https://github.com/joaopaulocunhafaria/TF-IDF/blob/d933888e9790b118c9f6f1d3f83fe725b1a83148/filas_pilhas/src/tfIdf.hpp#L34)
 
- 
 ### Cálculo de Relevância TF/IDF
- 
+
+De maneira semelhante à abordagem realizada na primeira implementação, com tabelas hash, o cálculo de relevância **TF/IDF** foi feito usando estruturas similares às utilizadas no cálculo de **Term Frequency (TF)**. Como o resultado final será a relação (ou ranking) de cada palavra em relação a todos os documentos, é necessário uma estrutura que armazene uma palavra (chave) e uma Fila de `doubles`, que representará o ranking dessa palavra nos documentos.
+
+Para isso, é possível utilizar a mesma estrutura empregada no cálculo de **Term Frequency (TF)**. Sendo assim, para modelar bem esta etapa do processo, foi utilizado um array da *struct* do tipo `PalavraTf` para armazenar o ranking de relevância final de cada palavra.
+
+[Acesse a declaração no código](https://github.com/joaopaulocunhafaria/TF-IDF/blob/0a7299a61a1f16bb800e782aff7195cdee4b70f4/filas_pilhas/src/tfIdf.hpp#L37)
 
 
-## Fluxograma
+### Comparação de Implementação  (Tabela Hash X Filas e Pilhas)
+
+A escolha da estrutura de dados impacta diretamente a performance do algoritmo, como ilustrado na tabela abaixo. A coluna "SEM HASH" representa o tempo de execução do algoritmo que utiliza filas e pilhas (FP), enquanto a coluna "COM HASH" mostra o tempo para um algoritmo otimizado com tabela hash. Observa-se uma diferença significativa de tempo, variando de aproximadamente 785% a 1112%. Isso demonstra que o uso de uma tabela hash é substancialmente mais eficiente para resolver o problema de cálculo de TF/IDF, reduzindo o tempo de processamento em diversas situações.
+
+Para a coleta de dados (medição do tempo de execução de cada algoritmo), foram utilizados diferentes livros/textos, dos quais foram extraídas palavras-chave específicas. A primeira coluna da tabela mostra o tamanho total dos textos, enquanto a segunda coluna exibe o tamanho das frases-chave.
+
+<img src="img/tabela_1.png" alt="Texto Alternativo" width="500"/>
+
+
+## Conclusão 
+
+Através da análise de ambas as implementações propostas, tanto usando estruturas do tipo tabela hash quanto utilizando apenas filas e pilhas, somos capazes de inferir conclusões enfáticas a respeito do desempenho de cada abordagem. Para resolver de maneira eficaz o problema proposto pela implementação do algoritmo TF/IDF, é necessário, em diversas ocasiões, realizar operações de pesquisa e inserção em estruturas de dados específicas. Nesse contexto, torna-se evidente o motivo da performance consideravelmente inferior da implementação que utiliza filas e pilhas em detrimento das tabelas hash. 
+
+Como citado anteriormente, o tempo médio de pesquisa em tabelas hash é calculado em **O(1)**, ou seja, com custo constante. Já nas listas, o custo médio de pesquisa é **O(n)**. Com essas informações, e considerando o volume de dados abordados neste trabalho — as palavras presentes em cada documento de pesquisa —, fica claro que o uso de tabelas hash é muito mais eficiente.
+
+Vamos observar a última operação de ambas as implementações, o cálculo de relevância TF/IDF, responsável por multiplicar as métricas TF e IDF. Em um cenário com tabelas hash, ao pesquisar uma palavra para obter seu ranking de TF, seria necessário um custo constante; considerando uma quantidade **D** de palavras, teríamos um custo de: `D * O(1)`. No contexto em que se utilizam filas para o mesmo propósito, cada pesquisa exigiria um custo linear. Para uma quantidade **D** de palavras, teríamos, então, um custo de: `D * O(n)`. Observando apenas esse último processo, podemos entender o impacto que a estrutura de dados pode ter na eficiência de um algoritmo, convertendo uma solução com custo **O(n)** em uma de custo **O(n²)**.
+
+Por fim, é necessário ressaltar que, embora as tabelas hash tenham apresentado desempenho superior às filas e pilhas, a solução deste algoritmo pode ser aprimorada com o uso de estruturas de dados ainda mais complexas, que poderiam melhorar ainda mais a eficiência do algoritmo. Como exemplo, podemos citar o uso de **grafos ponderados** para cálculo e armazenamento dos resultados. Dessa forma, após o processamento de cada palavra, o retorno de informações poderia se basear no grau de conexão entre uma palavra e um documento específico. Essa abordagem abre caminhos para implementações ainda mais eficientes e sofisticadas, oferecendo resultados ainda melhores.
+
+
+
+### Fluxograma
 O percurso do algoritmo passa pelos arquivos **main** (inicializador do programa), **processBook** (que processa o conteúdo dos livros na pasta datasets) e **tfidf** (responsável por realizar os cálculos TF/IDF). 
 1. **main**: o `main` é responsável por chamar o construtor `processBook` e inicializar o programa com a função `run`; também é responsável por informar quantos livros serão processados.
 2. **processBook**: A classe `ProcessBook`, localizado no arquivo `processBook`, consiste em um construtor e funções para o processamento e variáveis globais. Ele tem como objetivo de fazer as manipulaçãoes e processar os documentos. 
@@ -156,8 +181,6 @@ O percurso do algoritmo passa pelos arquivos **main** (inicializador do programa
  - **`calculateScore()`**: O objetivo é calcular uma pontuação agregada para um conjunto de palavras e seus respectivos valores de pontuação , somando vetores de pontuação em `calculateScore` usando a função `sumVector()`.
 - **`showScore()`**: Esta função exibe a relevância de cada frase em relação aos documentos, listando-os em ordem decrescente de relevância com base nas pontuações armazenadas em `lineScore`. Ela utiliza a função `sortedIndices` para classificar os documentos e apresenta os resultados de forma clara.
 
-
-
 ## COMPILAÇÃO E EXECUÇÃO 
 
 | Comando     | Função                                                                 |
@@ -165,3 +188,19 @@ O percurso do algoritmo passa pelos arquivos **main** (inicializador do programa
 | make clean  | Apaga a última compilação realizada contida na pasta build              |
 | make        | Executa a compilação do programa utilizando o gcc, e o resultado vai para a pasta build |
 | make run    | Executa o programa da pasta build após a realização da compilação       |
+
+## AMBIENTE DE EXECUÇÃO
+ <table border="1" align="center">
+      <tr>
+        <td>Sistema Operacional </td>
+        <td>Debian 12 - "Bookworm"</td>
+      </tr>
+      <tr>
+        <td>Compilador </td>
+        <td>G++ 12.2.0</td>
+      </tr>
+      <tr>
+        <td>Hardware </td>
+        <td>11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz, 24GB RAM, 512GB SSD</td>
+      </tr>   
+ </table>
