@@ -42,8 +42,7 @@ Thumbs.db
 .project
 .settings/
 
-# Makefile outputs
-Makefile
+# Makefile outputs 
 CMakeCache.txt
 CMakeFiles/
 cmake_install.cmake
