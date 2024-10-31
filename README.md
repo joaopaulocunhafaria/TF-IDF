@@ -121,7 +121,7 @@ Para isso, é possível utilizar a mesma estrutura empregada no cálculo de **Te
 [Acesse a declaração no código](https://github.com/joaopaulocunhafaria/TF-IDF/blob/0a7299a61a1f16bb800e782aff7195cdee4b70f4/filas_pilhas/src/tfIdf.hpp#L37)
 
 
-### Comparacao de Implementação com Tabela Hash X Filas e Pilhas
+### Comparação de Implementação  (Tabela Hash X Filas e Pilhas)
 
 O tipo de manipulação de dados é fundamental para a performance geral do algoritmo, como é demonstrado na tabela abaixo. A primeira coluna, "SEM HASH", representa o algoritmo baseado em filas e pilhas (FP), que teve um tempo de execução inferior em relação à segunda coluna, "COM HASH", que mostra um algoritmo com tabela hash. A diferença varia de aproximadamente 186% a 1086%. Isso demonstra que a utilização da tabela hash é mais eficiente na resolução do problema inicial, que é calcular o TF/IDF.
 
